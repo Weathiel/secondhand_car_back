@@ -71,14 +71,11 @@ public class UserService {
     }
 
     public ResponseEntity<?> authenticateUser(UserDTO userDTO) {
-
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-
-
 
         List list = userDetailsImpl.getAuthorities().stream().map(auth -> auth.getAuthority()
         ).collect(Collectors.toList());
@@ -136,14 +133,16 @@ public class UserService {
        }
     }
 
-    public void editUser(Long id, UserDTO userDTO) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+    public void editUser(String username, UserDTO userDTO) {
+        User user = getUserByUsername(username);
         user.setAddress(userDTO.getAddress());
         user.setCity(userDTO.getCity());
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
-        user.setPassword(userDTO.getPassword());
+        if(userDTO.getPassword().length() > 5){
+            user.setPassword(userDTO.getPassword());
+        }
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setUsername(userDTO.getUsername());
         userRepository.save(user);

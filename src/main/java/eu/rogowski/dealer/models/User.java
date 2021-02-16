@@ -52,8 +52,8 @@ public class User extends Auditable<String>{
     Set<Orders> orders = new HashSet<>(0);
 
     @ManyToMany
-    @JoinColumn
-    private Set<Role> role;
+    @JoinColumn()
+    private Set<Role> role = new HashSet<>(0);
 
     public User(@NotNull String username) {
         this.username = username;

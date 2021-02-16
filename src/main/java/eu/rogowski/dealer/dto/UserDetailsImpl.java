@@ -24,6 +24,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List authorities = new ArrayList();
+        System.out.println(user.getRole().size());
         for (Role role:
              user.getRole()) {
             authorities.add(new SimpleGrantedAuthority(role.getRolename()));

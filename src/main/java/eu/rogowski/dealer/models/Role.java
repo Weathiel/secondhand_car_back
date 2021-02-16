@@ -19,7 +19,4 @@ public class Role {
     private Long roleId;
 
     private String rolename;
-
-    @ManyToMany(mappedBy = "role")
-    Set<User> userSet = new HashSet<>(0);
 }

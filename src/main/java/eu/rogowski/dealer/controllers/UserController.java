@@ -40,7 +40,6 @@ public class UserController {
     }
 
     @GetMapping(params = "username")
-    @PreAuthorize("hasAnyRole('ROLE_WORKER', 'ROLE_ADMIN')")
     public User getUsersByUsername(@RequestParam String username) {
         return userService.getUserByUsername(username);
     }
@@ -67,22 +66,16 @@ public class UserController {
         userService.delete(id);
     }
 
-    @PutMapping("/{id}")
-    public void update(@PathVariable Long id,
-                       @RequestBody UserDTO userDTO){
-        userService.update(id, userDTO);
-    }
-
     @PostMapping("/filter")
     @PreAuthorize("hasAnyRole('ROLE_WORKER', 'ROLE_ADMIN')")
     public ResponseEntity filterUser(@RequestBody UserDTO userDTO){
         return userService.filter(userDTO);
     }
 
-    @PutMapping("/editProfile/{id}")
-    public void updateProfile(@PathVariable Long id,
+    @PutMapping("/{username}")
+    public void updateProfile(@PathVariable String username,
                               @RequestBody UserDTO userDTO){
-        userService.editUser(id, userDTO);
+        userService.editUser(username, userDTO);
     }
 
 }
